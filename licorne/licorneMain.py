@@ -175,7 +175,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             f.write('# Q,  R_measured,  Error, R_calculated\n')
                             for j in range(lq):
                                 f.write('{}\t{}\t{}\t{}\n'.format(ds_temp.Q[j], ds_temp.R[j], ds_temp.E[j], ds_temp.R_calc[j]))
-                 files_to_zip.append(os.path.join(folder,'data.txt'))
+                    files_to_zip.append(os.path.join(folder,'data-{}.txt'.format(i+1)))
             with zipfile.ZipFile(file_name, 'w') as myzip:
                 for f in files_to_zip:
                     myzip.write(f,os.path.basename(f))
