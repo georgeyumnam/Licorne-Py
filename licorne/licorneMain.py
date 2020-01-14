@@ -99,8 +99,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.layer_properties_widget.sampleModelChanged[licorne.SampleModel.SampleModel].connect(self.refresh)
         self.plot_widget.canvas.selectionChanged.connect(self.plot_set_selection)
         self.data_manager.dataModelChanged.connect(self.update_data_model)
-        # menu items
-        self.actionLoad_experiment_data.triggered.connect(self.load_experiment)
+        # menu items 
+        self.actionLoad_experiment_data.triggered.connect(self.load_experiment) 
         self.actionLoad_layers.triggered.connect(self.load_layers)
         self.actionSave_layers.triggered.connect(self.save_layers)
         self.actionSave_status.triggered.connect(self.save_state_dialog)
@@ -153,12 +153,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             files_to_zip.append(resolution_filename)
             #save experimental data and calculated reflectivity
             if self.data_model is not None:
-                 with open(os.path.join(folder,'data.txt'),'w') as f:
-                    f.write('# Background = {}\n'.format(self.data_model.background))
-                    f.write('# Theory normalization factor = {}\n'.format(self.data_model.theory_factor))
-                    f.write('# Experiment multiplicative factor = {}\n'.format(self.data_model.experiment_factor))
-                    f.write('\n# Data\n')
-                    for i,ds in enumerate(self.data_model.datasets):
+                for i,ds in enumerate(self.data_model.datasets):
+                    with open(os.path.join(folder,'data{}.txt'.format(i)),'w') as f:
+                        f.write('# Background = {}\n'.format(self.data_model.background))
+                        f.write('# Theory normalization factor = {}\n'.format(self.data_model.theory_factor))
+                        f.write('# Experiment multiplicative factor = {}\n'.format(self.data_model.experiment_factor))
+                        f.write('\n# Data\n')
                         if ds.Q is not None:
                             f.write('\n# ----- Dataset {} -----\n'.format(i))
                             f.write('# Experimental data filename = {}\n'.format(ds.filename))
