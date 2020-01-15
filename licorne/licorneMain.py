@@ -73,6 +73,33 @@ class DataPlotWindow(QtWidgets.QMainWindow):
         self.static_canvas.figure.tight_layout()
         self.static_canvas.draw()
 
+    def update_plot2(self, data_model):
+        n_plots = len(data_model.datasets)
+        n_cols = int(np.ceil(np.sqrt(n_plots)))
+        n_rows = int(np.ceil(n_plots / n_cols))
+        self.static_canvas.figure.clf()
+        for i in range(n_plots):
+            ax = self.static_canvas.figure.add_subplot(n_rows, n_cols, i + 1)
+            if data_model.datasets[i].R is not None:
+                ax.errorbar(data_model.datasets[i].Q,
+                            data_model.datasets[i].R * (data_model.datasets[i].Q)**4 * data_model.experiment_factor,
+                            data_model.datasets[i].E * (data_model.datasets[i].Q)**4 * data_model.experiment_factor,
+                            color=lu.data_color(), label='exp')
+            if data_model.datasets[i].R_calc is not None:
+                ax.plot(data_model.datasets[i].Q,
+                        (data_model.datasets[i].R_calc * data_model.theory_factor + data_model.background) * (data_model.datasets[i].Q)**4,
+                        color=lu.calculated_color(),
+                        label='calc')
+            ax.set_yscale("log")
+            ax.set_ylabel(r'Reflectivity $\times {\mathrm Q}^{4} ({\mathrm \AA}^{-4})$')
+            ax.set_xlabel(r'Q $({\mathrm \AA}^{-1})$')
+            ax.set_title('Pol:{0} Ana:{1}'.format(data_model.datasets[i].pol_Polarizer,
+                                                  data_model.datasets[i].pol_Analyzer))
+            if data_model.datasets[i].R is not None or data_model.datasets[i].R_calc is not None:
+                ax.legend()
+        self.static_canvas.figure.tight_layout()
+        self.static_canvas.draw()
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, sample_model):
@@ -108,6 +135,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave_report.triggered.connect(self.save_report)
 
         self.pushButton_plot.clicked.connect(self.do_plot)
+        self.pushButton_plot2.clicked.connect(self.do_plot2)
         self.pushButton_fit.clicked.connect(self.do_fit)
         self.plot_widget.updateSample(self.sample_model)
 
@@ -204,11 +232,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.data_model = data_model
         self.update_data_figure()
 
+    def update_data_model2(self, data_model):
+        self.data_model = data_model
+        self.update_data_figure2()
+
     def update_data_figure(self):
         if len(self.figure) > 0:
             if len(self.data_manager.data_model.datasets) > 0:
                 self.calculate_reflectivity()
                 self.figure[-1].update_plot(self.data_manager.data_model)
+            else:
+                self.figure[-1].static_canvas.figure.clf()
+                self.figure[-1].static_canvas.draw()
+
+    def update_data_figure2(self):
+        if len(self.figure) > 0:
+            if len(self.data_manager.data_model.datasets) > 0:
+                self.calculate_reflectivity()
+                self.figure[-1].update_plot2(self.data_manager.data_model)
             else:
                 self.figure[-1].static_canvas.figure.clf()
                 self.figure[-1].static_canvas.draw()
@@ -254,6 +295,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if len(self.data_model.datasets) > 0:
             self.calculate_reflectivity()
             self.figure[-1].update_plot(self.data_model)
+            self.figure[-1].show()
+
+    def do_plot2(self):
+        if self.data_model is None:
+            print("Load/generate some experimental data first")
+            return
+        self.figure.append(DataPlotWindow())
+        if len(self.data_model.datasets) > 0:
+            self.calculate_reflectivity()
+            self.figure[-1].update_plot2(self.data_model)
             self.figure[-1].show()
 
     def load_experiment(self):
@@ -311,7 +362,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def load_state_yaml(self,file_name):
         with open(file_name,'r') as f:
-            state=yaml.load(f)
+            state=yaml.load(f, Loader=yaml.Loader) 
 
         if 'model' in state.keys():
             temp_sample_model=licorne.SampleModel.SampleModel()
@@ -336,6 +387,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.data_manager.resolution_dialog.resolution_mode_changed('Custom')
 
         self.update_data_figure()
+        self.update_data_figure2()
 
     def load_layers(self):
         options = QtWidgets.QFileDialog.Options()
@@ -515,11 +567,14 @@ if __name__ == '__main__':
                                   sublayers=5,
                                   roughness=15.8909,
                                   roughness_model=RoughnessModel.TANH)
+    layer_1.msld.rho.vary = True
+    layer_2.msld.rho.vary = True                              
     layer_3.msld.rho.vary = True
     layer_4.msld.rho.vary = True
     layer_5.msld.rho.vary = True
     layer_7.msld.rho.vary = True
     layer_8.msld.rho.vary = True
+    
     smod.layers = [layer_1, layer_2, layer_3, layer_4, layer_5, layer_6, layer_7, layer_8]
     window = MainWindow(smod)
     window.show()

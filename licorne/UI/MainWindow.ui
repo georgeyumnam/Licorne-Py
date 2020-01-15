@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>933</width>
+    <width>935</width>
     <height>736</height>
    </rect>
   </property>
@@ -60,7 +60,14 @@
            <item>
             <widget class="QPushButton" name="pushButton_plot">
              <property name="text">
-              <string>Plot</string>
+              <string>Plot (R vs Q)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_plot2">
+             <property name="text">
+              <string>Plot (RQ^4 vs Q)</string>
              </property>
             </widget>
            </item>
@@ -104,8 +111,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>933</width>
-     <height>19</height>
+     <width>935</width>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
