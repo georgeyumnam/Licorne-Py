@@ -100,6 +100,43 @@ class DataPlotWindow(QtWidgets.QMainWindow):
         self.static_canvas.figure.tight_layout()
         self.static_canvas.draw()
 
+    def update_plot_SA(self, data_model):
+        n_plots = len(data_model.datasets)
+        if n_plots <= 1:
+            print("Warning: Cannot plot spin-assymetry (SA) with only one dataset.")
+            print("         Please load atleast 2 dataset (eg. R+ and R-) to plot SA.")
+            return
+        else:
+            self.static_canvas.figure.clf()
+            for i in range(1, n_plots, 1):
+                ax = self.static_canvas.figure.add_subplot(1, n_plots-1, i)
+
+                if data_model.datasets[i].R is not None:
+                    ef = data_model.experiment_factor
+                    ax.errorbar(data_model.datasets[0].Q,
+                                (data_model.datasets[0].R - data_model.datasets[i].R)/(data_model.datasets[0].R + data_model.datasets[i].R),
+                                np.sqrt((data_model.datasets[0].E * ef)**2 * (1.0/(np.add(data_model.datasets[0].R, data_model.datasets[i].R) * ef) - 
+                                 ((data_model.datasets[0].R - data_model.datasets[i].R) * ef)/(np.add(data_model.datasets[0].R, data_model.datasets[i].R) * ef)**2)**2 +
+                                 (data_model.datasets[i].E * ef)**2 * (-1.0/(np.add(data_model.datasets[0].R, data_model.datasets[i].R) * ef) - 
+                                 ((data_model.datasets[0].R - data_model.datasets[i].R) * ef)/(np.add(data_model.datasets[0].R, data_model.datasets[i].R) * ef)**2)**2),
+                                 fmt='o', color=lu.data_color(), alpha=0.4, capthick=1.2, label='exp')
+                if data_model.datasets[i].R_calc is not None:
+                    ax.plot(data_model.datasets[0].Q,
+                            ((data_model.datasets[0].R_calc * data_model.theory_factor + data_model.background) - 
+                             (data_model.datasets[i].R_calc * data_model.theory_factor + data_model.background)) / 
+                             ((data_model.datasets[0].R_calc * data_model.theory_factor + data_model.background) + 
+                              (data_model.datasets[i].R_calc * data_model.theory_factor + data_model.background)),
+                            color=lu.calculated_color(),
+                            label='calc')
+                ax.set_ylabel(r'Spin-Asymmetry')
+                ax.set_xlabel(r'Q $({\mathrm \AA}^{-1})$')
+                ax.set_title('Pol:{0} Ana:{1} \n with \n Pol:{2} Ana:{3}'.format(data_model.datasets[0].pol_Polarizer,
+                                                    data_model.datasets[0].pol_Analyzer, data_model.datasets[i].pol_Polarizer,
+                                                    data_model.datasets[i].pol_Analyzer))
+                if data_model.datasets[i].R is not None or data_model.datasets[i].R_calc is not None:
+                    ax.legend()
+            self.static_canvas.figure.tight_layout()
+            self.static_canvas.draw()
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, sample_model):
@@ -136,6 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.pushButton_plot.clicked.connect(self.do_plot)
         self.pushButton_plot2.clicked.connect(self.do_plot2)
+        self.pushButton_SA.clicked.connect(self.do_plot_SA)
         self.pushButton_fit.clicked.connect(self.do_fit)
         self.plot_widget.updateSample(self.sample_model)
 
@@ -254,6 +292,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.figure[-1].static_canvas.figure.clf()
                 self.figure[-1].static_canvas.draw()
 
+    def update_data_figure_SA(self):
+        if len(self.figure) > 0:
+            if len(self.data_manager.data_model.datasets) > 0:
+                self.calculate_reflectivity()
+                self.figure[-1].update_plot_SA(self.data_manager.data_model)
+            else:
+                self.figure[-1].static_canvas.figure.clf()
+                self.figure[-1].static_canvas.draw()
+
     def plot_set_selection(self, selection):
         layer_index = self.layerselector_widget.sample_model.index(selection)
         self.layerselector_widget.listView.selectionModel().select(layer_index, QtCore.QItemSelectionModel.Toggle)
@@ -305,6 +352,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if len(self.data_model.datasets) > 0:
             self.calculate_reflectivity()
             self.figure[-1].update_plot2(self.data_model)
+            self.figure[-1].show()
+
+    def do_plot_SA(self):
+        if self.data_model is None:
+            print("Load/generate some experimental data first")
+            return
+        self.figure.append(DataPlotWindow())
+        if len(self.data_model.datasets) > 0:
+            self.calculate_reflectivity()
+            self.figure[-1].update_plot_SA(self.data_model)
             self.figure[-1].show()
 
     def load_experiment(self):
@@ -388,6 +445,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.update_data_figure()
         self.update_data_figure2()
+        self.update_data_figure_SA()
 
     def load_layers(self):
         options = QtWidgets.QFileDialog.Options()

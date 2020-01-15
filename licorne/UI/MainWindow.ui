@@ -60,14 +60,27 @@
            <item>
             <widget class="QPushButton" name="pushButton_plot">
              <property name="text">
-              <string>Plot (R vs Q)</string>
+              <string>Plot (R)</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_plot2">
              <property name="text">
-              <string>Plot (RQ^4 vs Q)</string>
+              <string>Plot (RQ^4)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_SA">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Plot (SA)</string>
              </property>
             </widget>
            </item>
