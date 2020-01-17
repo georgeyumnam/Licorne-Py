@@ -20,6 +20,7 @@ class NumericParameterWidget(PyQt5.QtWidgets.QWidget, Ui_NumericParameter):
         if self.parameter is not None:
             self.updateUiFromParameter(self.parameter, self.available_ties, self.prefix)
 
+
     def updateUiFromParameter(self, parameter, available_ties=None, prefix=''):
         if isinstance(parameter, licorne.NumericParameter.NumericParameter):
             if self.ties_comboBox.count()==0:
@@ -113,9 +114,9 @@ class NumericParameterWidget(PyQt5.QtWidgets.QWidget, Ui_NumericParameter):
 
 if __name__ == '__main__':
     app = PyQt5.QtWidgets.QApplication(sys.argv)
-    par1 = licorne.NumericParameter.NumericParameter(name='par1', value=3, maximum=7, vary=True, expr='other value1')
-    par2 = licorne.NumericParameter.NumericParameter(name='par2', value=3, maximum=7, vary=True)
-    par3 = licorne.NumericParameter.NumericParameter(name='par3', value=3, vary=False)
-    window = NumericParameterWidget(parameter=[par1, par2, par3], available_ties=['other value', 'different value'])
-    window.show()
+    #par1 = licorne.NumericParameter.NumericParameter(name='par1', value=3, maximum=7, vary=True, expr='other value1')
+    #par2 = licorne.NumericParameter.NumericParameter(name='par2', value=3, maximum=7, vary=True)
+    #par3 = licorne.NumericParameter.NumericParameter(name='par3', value=3, vary=False)
+    #window = NumericParameterWidget(parameter=[par1, par2, par3], available_ties=['other value', 'different value'])
+    #window.show()
     sys.exit(app.exec_())
