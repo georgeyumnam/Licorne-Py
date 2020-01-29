@@ -22,6 +22,9 @@ class NumericParameter(object):
         Upper bound for value (None or inf means no upper bound).
     expr : str
         An expression specifying constraints for the NumericParameter. 
+    tied_to : str
+        An expression specifying which layer is tied to the current layer,
+        for the same parameter. The value for such tied layers have to be the same.
     """
     def __init__(self, name = None, value = None, 
                  minimum = -np.inf, maximum = np.inf,
@@ -41,6 +44,9 @@ class NumericParameter(object):
             Upper bound for value (None or inf means no upper bound).
         expr : str, optional
             Mathematical expression used to constrain the value during the fit.
+        tied_to : str
+            An expression specifying which layer is tied to the current layer,
+            for the same parameter. The value for such tied layers have to be the same.
         """
         self._name = name
         self._minimum = minimum
