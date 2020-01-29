@@ -22,7 +22,7 @@
        <height>400</height>
       </size>
      </property>
-     <widget class="QComboBox" name="comboBox_simultaneousplotter">
+     <widget class="QComboBox" name="comboBox_simultaneousplotter1">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -31,6 +31,36 @@
         <height>26</height>
        </rect>
       </property>
+      <item>
+       <property name="text">
+        <string>NSLD real</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NSLD Imaginary</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD theta</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Roughness</string>
+       </property>
+      </item>
      </widget>
      <widget class="layerplot" name="plot_widget_sp_1" native="true">
       <property name="geometry">
@@ -46,16 +76,6 @@
         <width>0</width>
         <height>200</height>
        </size>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox_simultaneousplotter_3">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>250</y>
-        <width>580</width>
-        <height>26</height>
-       </rect>
       </property>
      </widget>
      <widget class="layerplot" name="plot_widget_sp_2" native="true">
@@ -74,16 +94,6 @@
        </size>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBox_simultaneousplotter_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>490</y>
-        <width>580</width>
-        <height>26</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="layerplot" name="plot_widget_sp_3" native="true">
       <property name="geometry">
        <rect>
@@ -99,6 +109,86 @@
         <height>200</height>
        </size>
       </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_simultaneousplotter2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>240</y>
+        <width>580</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>NSLD real</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NSLD Imaginary</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD theta</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Roughness</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="comboBox_simultaneousplotter3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>490</y>
+        <width>580</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>NSLD real</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NSLD Imaginary</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD theta</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MSLD rho</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Roughness</string>
+       </property>
+      </item>
      </widget>
     </widget>
    </item>
