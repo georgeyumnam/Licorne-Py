@@ -22,7 +22,7 @@
        <height>400</height>
       </size>
      </property>
-     <widget class="QComboBox" name="comboBox_simultaneousplotter1">
+     <widget class="QComboBox" name="comboBox_simultaneousplotter">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -150,7 +150,7 @@
        </property>
       </item>
      </widget>
-     <widget class="QComboBox" name="comboBox_simultaneousplotter3">
+     <widget class="QComboBox" name="comboBox_simultaneousplotter_3">
       <property name="geometry">
        <rect>
         <x>0</x>
