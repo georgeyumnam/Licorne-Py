@@ -625,13 +625,6 @@ if __name__ == '__main__':
                                   sublayers=5,
                                   roughness=15.8909,
                                   roughness_model=RoughnessModel.TANH)
-    layer_1.msld.rho.vary = True
-    layer_2.msld.rho.vary = True                              
-    layer_3.msld.rho.vary = True
-    layer_4.msld.rho.vary = True
-    layer_5.msld.rho.vary = True
-    layer_7.msld.rho.vary = True
-    layer_8.msld.rho.vary = True
     
     smod.layers = [layer_1, layer_2, layer_3, layer_4, layer_5, layer_6, layer_7, layer_8]
     window = MainWindow(smod)
