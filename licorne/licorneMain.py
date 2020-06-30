@@ -220,13 +220,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             #save experimental data and calculated reflectivity
             if self.data_model is not None:
                 for i,ds in enumerate(self.data_model.datasets):
-                    with open(os.path.join(folder,'data-{}.txt'.format(i)),"w+") as f:
+                    with open(os.path.join(folder,'data-{}.txt'.format(i+1)),"w+") as f:
                         f.write('# Background = {}\n'.format(self.data_model.background))
                         f.write('# Theory normalization factor = {}\n'.format(self.data_model.theory_factor))
                         f.write('# Experiment multiplicative factor = {}\n'.format(self.data_model.experiment_factor))
                         f.write('\n# Data\n')
                         if ds.Q is not None:
-                            f.write('\n# ----- Dataset {} -----\n'.format(i))
+                            f.write('\n# ----- Dataset {} -----\n'.format(i+1))
                             f.write('# Experimental data filename = {}\n'.format(ds.filename))
                             f.write('# Polarization polarizer = {}\n'.format(ds.pol_Polarizer))
                             f.write('# Polarization analyzer = {}\n'.format(ds.pol_Analyzer))
@@ -241,7 +241,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             f.write('# Q,  R_measured,  Error, R_calculated\n')
                             for j in range(lq):
                                 f.write('{}\t{}\t{}\t{}\n'.format(ds_temp.Q[j], ds_temp.R[j], ds_temp.E[j], ds_temp.R_calc[j]))
-                        files_to_zip.append(os.path.join(folder,'data-{}.txt'.format(i)))
+                        files_to_zip.append(os.path.join(folder,'data-{}.txt'.format(i+1)))
             with zipfile.ZipFile(file_name, 'w') as myzip:
                 for f in files_to_zip:
                     myzip.write(f,os.path.basename(f))
